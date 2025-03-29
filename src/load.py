@@ -15,10 +15,12 @@ def load(data_frames: Dict[str, DataFrame], database: Engine):
     # usar pandas.DataFrame.to_sql() para cargar el DataFrame en la base de datos
     # como una tabla.
     # Para el nombre de la tabla, utiliza las claves del diccionario `data_frames`.
-
-    with database.connect() as connection:
-        for table_name, df in data_frames.items():
-            df.to_sql(name=table_name, con=connection, if_exists="replace", index=False)
-            print(f"Table {table_name} load sucessfully!!")
-
-    database.dispose()
+    
+    # Itera sobre cada par (nombre de la tabla, DataFrame) en el diccionario data_frames.
+    for table_name, df in data_frames.items():
+    # Guarda el DataFrame en la base de datos:
+    # - table_name: se usa como nombre de la tabla.
+    # - database: es la conexión al motor de la base de datos.
+    # - if_exists='replace': reemplaza la tabla si esta ya existe.
+    # - index=False: no guarda el índice del DataFrame como columna en la tabla.
+        df.to_sql(table_name, database, if_exists='replace', index=False)
