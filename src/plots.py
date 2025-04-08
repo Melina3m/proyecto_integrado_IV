@@ -173,16 +173,24 @@ def plot_top_10_revenue_categories(df: DataFrame):
     fig.show()
 
 
-def plot_freight_value_weight_relationship(df: DataFrame):
+def plot_freight_value_weight_relationship(df):
     """Plot freight value weight relationship
 
     Args:
         df (DataFrame): Dataframe with freight value weight relationship query result
     """
-    # TODO: Representar gráficamente la relación entre el valor del flete y el peso usando un scatterplot de seaborn.
-    # El eje x debe ser el peso (weight) y el eje y debe ser el valor del flete (freight value).
+    import seaborn as sns
+    import matplotlib.pyplot as plt
 
-    raise NotImplementedError
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(data=df, x='product_weight_g', y='freight_value', alpha=0.6)
+    plt.title('Relación entre peso del producto y valor del flete')
+    plt.xlabel('Peso del producto')
+    plt.ylabel('Valor del flete')
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
 
 
 def plot_delivery_date_difference(df: DataFrame):
@@ -196,14 +204,29 @@ def plot_delivery_date_difference(df: DataFrame):
     )
 
 
-def plot_order_amount_per_day_with_holidays(df: DataFrame):
-    """Plot order amount per day with holidays
+def plot_order_amount_per_day_with_holidays(df):
+    """Plot order count per day with holidays
 
     Args:
-        df (DataFrame): Dataframe with order amount per day with holidays query result
+        df (DataFrame): Dataframe with order count per day and holiday info
     """
-    # TODO: Graficar el monto de pedidos por día con los días festivos usando matplotlib.
-    # Marcar los días festivos con líneas verticales.
-    # Sugerencia: usar plt.axvline.
+    import matplotlib.pyplot as plt
+    import pandas as pd
 
-    raise NotImplementedError
+    df['date'] = pd.to_datetime(df['date'])
+
+    plt.figure(figsize=(15, 6))
+    plt.plot(df['date'], df['order_count'], label='Cantidad de pedidos', color='skyblue')
+
+    holidays = df[df['holiday'] == True]['date']
+    for holiday in holidays:
+        plt.axvline(x=holiday, color='red', linestyle='--', alpha=0.5)
+
+    plt.title('Cantidad de pedidos por día con días festivos')
+    plt.xlabel('Fecha')
+    plt.ylabel('Cantidad de pedidos')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
